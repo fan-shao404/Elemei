@@ -22,6 +22,6 @@ public class StoreAdapter extends BaseQuickAdapter<Store, BaseViewHolder> {
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, Store store) {
-
+        baseViewHolder.setText(R.id.tv_store_name,store.getName());
     }
 }

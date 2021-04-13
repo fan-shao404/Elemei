@@ -21,7 +21,9 @@ import com.example.elemei.R;
 import com.example.elemei.view.Adapter.StoreAdapter;
 import com.example.elemei.view.activity.LoginActivity;
 import com.example.elemei.view.event.Login;
+import com.example.elemei.view.net.StoreCall;
 import com.example.elemei.view.pojo.Store;
+import com.example.elemei.view.pojo.StoreBean;
 import com.example.elemei.view.util.AppBarStateChangeListenner;
 import com.example.elemei.view.util.MyItemDecoration;
 import com.google.android.material.appbar.AppBarLayout;
@@ -32,11 +34,17 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private boolean login;
     private View view;
     private RecyclerView recyclerView;
+    private StoreCall storeCall = new StoreCall();
+    private List<Store> stores = new ArrayList<>();
 
     @Nullable
     @Override
@@ -83,14 +91,24 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        List<Store> stores = new ArrayList<>();
-        for (int i=0;i<15;i++){
-            stores.add(new Store());
-        }
-        recyclerView = getView().findViewById(R.id.rv_fragment_main_store);
-        recyclerView.setAdapter(new StoreAdapter(stores));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new MyItemDecoration());
+        storeCall.selectAll(new Callback<StoreBean>() {
+            @Override
+            public void onResponse(Call<StoreBean> call, Response<StoreBean> response) {
+                Log.e("TAG", "onResponse: "+response.code()+response.body().getResult().size());
+                if (response.body().isResult && response.body().getResult()!=null){
+                    stores = response.body().getResult();
+                    recyclerView = getView().findViewById(R.id.rv_fragment_main_store);
+                    recyclerView.setAdapter(new StoreAdapter(stores));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerView.addItemDecoration(new MyItemDecoration());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StoreBean> call, Throwable t) {
+                Toast.makeText(getActivity(),"系统错误",Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     @Override

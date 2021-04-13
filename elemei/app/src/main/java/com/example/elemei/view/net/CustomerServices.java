@@ -17,7 +17,6 @@ import retrofit2.http.POST;
  * Author:fanshaofeng
  */
 public interface CustomerServices {
-//    @Headers({"content-type:application/x-www-form-urlencoded"})
     @POST(value = "customer/add")
     @FormUrlEncoded
     Call<InsertBean> registerCustomer(@Field("phone") String phone, @Field("email") String email, @Field("password") String password);

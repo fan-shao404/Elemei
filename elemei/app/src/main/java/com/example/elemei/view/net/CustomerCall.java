@@ -5,11 +5,7 @@ import android.util.Log;
 import com.example.elemei.view.pojo.CountBean;
 import com.example.elemei.view.pojo.CustomerBean;
 import com.example.elemei.view.pojo.InsertBean;
-import com.example.elemei.view.pojo.OKPacket;
-
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Date:2021/4/9
@@ -24,7 +20,7 @@ public class CustomerCall extends BaseCall<CustomerServices> {
 
     @Override
     public CustomerServices obtain(Class<CustomerServices> service) {
-        return retrofit.create(CustomerServices.class);
+        return retrofit.create(service);
     }
     //注册客户
     public void addCustomer(String phone,String email,String password,Callback<InsertBean> callback){
