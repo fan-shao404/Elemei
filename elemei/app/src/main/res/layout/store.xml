@@ -22,8 +22,8 @@
         app:layout_constraintTop_toTopOf="@+id/view_store"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:background="@color/black"
         android:layout_marginBottom="15dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/view_store"
         app:layout_constraintLeft_toLeftOf="@+id/view_store"/>
 

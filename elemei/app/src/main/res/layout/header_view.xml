@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/view_header_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/gray_5"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp"
+        android:text="全部"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/view_header_noodle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_5"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp"
+        android:text="面食"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_all"
+        app:layout_constraintLeft_toRightOf="@+id/view_header_all"
+        app:layout_constraintRight_toLeftOf="@+id/view_header_drink"
+        app:layout_constraintTop_toTopOf="@+id/view_header_all" />
+
+    <TextView
+        android:id="@+id/view_header_drink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_5"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp"
+        android:text="甜品饮料"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_all"
+        app:layout_constraintLeft_toRightOf="@+id/view_header_noodle"
+        app:layout_constraintRight_toLeftOf="@+id/view_header_rice"
+        app:layout_constraintTop_toTopOf="@+id/view_header_all" />
+
+    <TextView
+        android:id="@+id/view_header_rice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_5"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp"
+        android:text="盖浇饭"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_all"
+        app:layout_constraintLeft_toRightOf="@+id/view_header_drink"
+        app:layout_constraintRight_toLeftOf="@+id/view_header_pickled_food"
+        app:layout_constraintTop_toTopOf="@+id/view_header_all" />
+
+    <TextView
+        android:id="@+id/view_header_pickled_food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/gray_5"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="5dp"
+        android:text="凉卤"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_all"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_all" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

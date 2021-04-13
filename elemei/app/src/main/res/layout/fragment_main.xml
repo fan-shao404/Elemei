@@ -84,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/view_search"
+                android:elevation="0dp"
                 android:background="@drawable/white_20">
 
                 <TextView

@@ -44,7 +44,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private View view;
     private RecyclerView recyclerView;
     private StoreCall storeCall = new StoreCall();
-    private List<Store> stores = new ArrayList<>();
+    private List<Store> current_stores = new ArrayList<>();
+    private StoreAdapter storeAdapter;
 
     @Nullable
     @Override
@@ -56,10 +57,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
-//        StatusBarUtils.setWindowStatusBarColor(getActivity(),R.color.blue);
         if (login) {
             view.setVisibility(View.INVISIBLE);
         }
+//        getView().findViewById(R.id.view_header).findViewById(R.id.view_header_noodle).setOnClickListener(this);
+//        getView().findViewById(R.id.view_header_rice).setOnClickListener(this);
         super.onResume();
     }
 
@@ -73,40 +75,114 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         View statusbar = getView().findViewById(R.id.view_statusbar);
         setStatusBarHeight(statusbar);
         AppBarLayout appBarLayout = getView().findViewById(R.id.abl_main);
+        //添加折叠的监听
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListenner() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                if (state == State.IDLE){
+                if (state == State.IDLE) {
                     statusbar.setBackgroundColor(getResources().getColor(R.color.blue_trans));
                     appBarLayout.setBackgroundColor(getResources().getColor(R.color.blue_trans));
                 }
-                if (state == State.EXPANDED){
+                if (state == State.EXPANDED) {
                     statusbar.setBackgroundColor(getResources().getColor(R.color.blue));
                     appBarLayout.setBackgroundColor(getResources().getColor(R.color.blue));
                 }
-                if (state == State.COLLAPSED){
+                if (state == State.COLLAPSED) {
                     statusbar.setBackgroundColor(getResources().getColor(R.color.white));
                     appBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
                 }
             }
         });
+        //渲染stores 数据
         storeCall.selectAll(new Callback<StoreBean>() {
             @Override
             public void onResponse(Call<StoreBean> call, Response<StoreBean> response) {
-                Log.e("TAG", "onResponse: "+response.code()+response.body().getResult().size());
-                if (response.body().isResult && response.body().getResult()!=null){
-                    stores = response.body().getResult();
+                Log.e("TAG", "onResponse: " + response.code() + response.body().getResult().size());
+                if (response.body().isResult && response.body().getResult() != null) {
+                    List<Store> stores = response.body().getResult();
+                    List<Store> noodle_stores = new ArrayList<>();
+                    List<Store> rice_stores = new ArrayList<>();
+                    List<Store> pickled_stores = new ArrayList<>();
+                    List<Store> drink_stores = new ArrayList<>();
+                    for (Store store : response.body().getResult()) {
+                        if (store.getClassification().equals("面食")) {
+                            noodle_stores.add(store);
+                        } else if (store.getClassification().equals("甜点饮品")) {
+                            drink_stores.add(store);
+                        } else if (store.getClassification().equals("凉卤")) {
+                            pickled_stores.add(store);
+                        } else {
+                            rice_stores.add(store);
+                        }
+                    }
                     recyclerView = getView().findViewById(R.id.rv_fragment_main_store);
-                    recyclerView.setAdapter(new StoreAdapter(stores));
+                    current_stores = stores;
+                    storeAdapter = new StoreAdapter(current_stores);
+                    recyclerView.setAdapter(storeAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    View footer = LayoutInflater.from(getActivity()).inflate(R.layout.footer_view, recyclerView, false);
+                    View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_view, recyclerView, false);
+                    header.findViewById(R.id.view_header_noodle).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (current_stores != noodle_stores) {
+                                storeAdapter.setList(noodle_stores);
+                                current_stores = noodle_stores;
+                                Log.e("TAG", "onClick: noodle" + current_stores.toString());
+                            }
+                        }
+                    });
+                    header.findViewById(R.id.view_header_pickled_food).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (current_stores != pickled_stores) {
+                                storeAdapter.setList(pickled_stores);
+                                current_stores = pickled_stores;
+                                Log.e("TAG", "onClick: pickled" + stores.toString());
+                            }
+                        }
+                    });
+                    header.findViewById(R.id.view_header_rice).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (current_stores != rice_stores) {
+                                storeAdapter.setList(rice_stores);
+                                current_stores = rice_stores;
+                                Log.e("TAG", "onClick: rice" + stores.toString());
+                            }
+                        }
+                    });
+                    header.findViewById(R.id.view_header_all).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.e("TAG", "onClick: all0");
+                            if (current_stores != stores) {
+                                storeAdapter.setList(stores);
+                                current_stores = stores;
+                                Log.e("TAG", "onClick: all" + stores.toString());
+                            }
+                        }
+                    });
+                    header.findViewById(R.id.view_header_drink).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (current_stores != drink_stores) {
+                                storeAdapter.setList(drink_stores);
+                                current_stores = drink_stores;
+                                Log.e("TAG", "onClick: drink" + current_stores.toString());
+                            }
+                        }
+                    });
+                    storeAdapter.addFooterView(footer);
+                    storeAdapter.addHeaderView(header);
                     recyclerView.addItemDecoration(new MyItemDecoration());
                 }
             }
 
             @Override
             public void onFailure(Call<StoreBean> call, Throwable t) {
-                Toast.makeText(getActivity(),"系统错误",Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -118,7 +194,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (!login) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 } else {
-                    Toast.makeText(getActivity(),"功能还在开发中",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "功能还在开发中", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_login:
@@ -128,11 +204,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 if (!login) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 } else {
-                    Toast.makeText(getActivity(),"功能还在开发",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "功能还在开发", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
+
     @Subscribe
     public void login(Login login) {
         this.login = login.isLogin();
@@ -143,7 +220,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-    public void setStatusBarHeight(View view){
+
+    public void setStatusBarHeight(View view) {
         int statusBarHeight = -1;
         //获取status_bar_height资源的ID
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
