@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/view_function"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/white_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@+id/view_function"
+                app:layout_constraintTop_toTopOf="@id/view_function"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="常用功能"/>
+
+            <TextView
+                android:id="@+id/tv_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="红包卡券"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="@+id/view_function"
+                app:layout_constraintBottom_toBottomOf="@+id/view_function"
+                app:layout_constraintRight_toLeftOf="@+id/tv_follwo"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_follwo"
+                app:layout_constraintLeft_toRightOf="@+id/tv_card"
+                app:layout_constraintTop_toTopOf="@+id/tv_card"
+                android:textColor="@color/black"
+                android:gravity="center"
+                app:layout_constraintRight_toLeftOf="@+id/tv_shoppingcar"
+                android:text="店铺关注"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/tv_follwo"
+                app:layout_constraintTop_toTopOf="@+id/tv_follwo"
+                android:id="@+id/tv_shoppingcar"
+                android:gravity="center"
+                android:text="购物车"
+                app:layout_constraintRight_toLeftOf="@+id/tv_evaluate"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="评价中心"
+                android:id="@+id/tv_evaluate"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="@+id/tv_shoppingcar"
+                app:layout_constraintLeft_toRightOf="@+id/tv_shoppingcar"
+                app:layout_constraintRight_toRightOf="@+id/view_function"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:id="@+id/iv_card"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintLeft_toLeftOf="@id/tv_card"
+                app:layout_constraintRight_toRightOf="@id/tv_card"
+                app:layout_constraintBottom_toTopOf="@+id/tv_card"
+                android:layout_marginBottom="10dp"
+                android:src="@mipmap/ic_card"/>
+
+            <ImageView
+                android:id="@+id/iv_follow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_follow"
+                app:layout_constraintLeft_toLeftOf="@id/tv_follwo"
+                app:layout_constraintBottom_toBottomOf="@id/iv_card"
+                app:layout_constraintRight_toRightOf="@id/tv_follwo"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_shoppingcar"
+                app:layout_constraintRight_toRightOf="@+id/tv_shoppingcar"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_card"
+                android:id="@+id/iv_shoppingcar"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_shoppingcar"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_evaluate"
+                app:layout_constraintRight_toRightOf="@+id/tv_evaluate"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_card"
+                android:id="@+id/iv_evaluate"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_evaluate"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
