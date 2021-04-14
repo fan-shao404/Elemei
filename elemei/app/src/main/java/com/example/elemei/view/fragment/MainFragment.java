@@ -3,7 +3,6 @@ package com.example.elemei.view.fragment;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.elemei.R;
-import com.example.elemei.view.Adapter.StoreAdapter;
+import com.example.elemei.view.adapter.StoreAdapter;
 import com.example.elemei.view.activity.LoginActivity;
 import com.example.elemei.view.event.Login;
 import com.example.elemei.view.net.StoreCall;
@@ -28,6 +26,7 @@ import com.example.elemei.view.pojo.StoreBean;
 import com.example.elemei.view.util.AppBarStateChangeListenner;
 import com.example.elemei.view.util.MyItemDecoration;
 import com.example.elemei.view.util.NetUtils;
+import com.example.elemei.view.util.StatusBarUtils;
 import com.google.android.material.appbar.AppBarLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -110,20 +109,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-    //设置状态栏部分的view的高度
-    public void setStatusBarHeight(View view) {
-        int statusBarHeight = -1;
-        //获取status_bar_height资源的ID
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            //根据资源ID获取响应的尺寸值
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = statusBarHeight;
-        view.setLayoutParams(layoutParams);
     }
 
     //渲染stores 数据
@@ -239,7 +224,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
         swipeRefreshLayout.setOnRefreshListener(this);
         EventBus.getDefault().register(this);
         View statusbar = getView().findViewById(R.id.view_statusbar);
-        setStatusBarHeight(statusbar);
+        StatusBarUtils.setStatusBarHeight(getActivity(),statusbar);
         AppBarLayout appBarLayout = getView().findViewById(R.id.abl_main);
         //添加折叠的监听
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListenner() {
