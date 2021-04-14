@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+
+    <ImageView
+        android:id="@+id/iv_homepage_store_header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_homepage_store_service"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/white_5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_homepage_store_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="老黄凉菜"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_homepage_store_header"
+        app:layout_constraintLeft_toLeftOf="@+id/view_homepage_store_service" />
+
+    <TextView
+        android:id="@+id/tv_homepage_store_month_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="5dp"
+        android:text="月售9999"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_homepage_store_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_homepage_store_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="公告：该字段还未添加"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_homepage_store_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_homepage_store_month_sale" />
+
+    <ImageView
+        android:id="@+id/iv_homepage_store_cover"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:scaleType="fitXY"
+        app:layout_constraintRight_toRightOf="@+id/view_homepage_store_service"
+        app:layout_constraintTop_toTopOf="@+id/view_homepage_store_service" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_homepage_store_shopping_car"
+        app:layout_constraintTop_toBottomOf="@id/view_homepage_store_service">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_activity_store_commodity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/view_homepage_store_shopping_car"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@mipmap/ic_shopping_pack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_homepage_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="5dp"
+        android:text="￥0"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_homepage_store_shopping_car" />
+
+    <TextView
+        android:id="@+id/tv_homepage_store_distribution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="另需要配送费￥0"
+        android:textSize="12dp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_homepage_sum"
+        app:layout_constraintTop_toBottomOf="@+id/tv_homepage_sum" />
+
+    <TextView
+        android:id="@+id/tv_homepage_store_start_send"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/gray_20"
+        android:gravity="center"
+        android:paddingHorizontal="20dp"
+        android:text="￥20起送"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_homepage_store_shopping_car" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private VideoFragment videoFragment;
     private OrderFragment orderFragment;
     private MineFragment mineFragment;
-    private Boolean login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

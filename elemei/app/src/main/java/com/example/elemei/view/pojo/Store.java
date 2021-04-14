@@ -5,20 +5,30 @@ package com.example.elemei.view.pojo;
  * Author:fanshaofeng
  */
 public class Store {
+    private Integer id;
     private String name;
     private String cover;
     private double score;
-    private String start_send;
-    private String distribution;
+    private double start_send;
+    private double distribution;
     private String classification;
 
-    public Store(String name, String cover, double score, String start_send, String distribution, String classification) {
+    public Store(Integer id,String name, String cover, double score, double start_send, double distribution, String classification) {
+        this.id = id;
         this.name = name;
         this.cover = cover;
         this.score = score;
         this.start_send = start_send;
         this.distribution = distribution;
         this.classification = classification;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,19 +55,19 @@ public class Store {
         this.score = score;
     }
 
-    public String getStart_send() {
+    public double getStart_send() {
         return start_send;
     }
 
-    public void setStart_send(String start_send) {
+    public void setStart_send(double start_send) {
         this.start_send = start_send;
     }
 
-    public String getDistribution() {
+    public double getDistribution() {
         return distribution;
     }
 
-    public void setDistribution(String distribution) {
+    public void setDistribution(double distribution) {
         this.distribution = distribution;
     }
 
@@ -72,11 +82,12 @@ public class Store {
     @Override
     public String toString() {
         return "Store{" +
+                "id="+id+
                 "name='" + name + '\'' +
                 ", cover='" + cover + '\'' +
                 ", score=" + score +
-                ", start_send='" + start_send + '\'' +
-                ", distribution='" + distribution + '\'' +
+                ", start_send=" + start_send +
+                ", distribution=" + distribution +
                 ", classification='" + classification + '\'' +
                 '}';
     }
