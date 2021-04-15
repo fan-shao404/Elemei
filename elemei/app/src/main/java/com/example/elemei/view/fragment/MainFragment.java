@@ -200,6 +200,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
             @Override
             public void onFailure(Call<StoreBean> call, Throwable t) {
                 Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT);
+                //sfsfasfsa
+                //sfsfasfsa
+                //sfsfasfsagit
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
