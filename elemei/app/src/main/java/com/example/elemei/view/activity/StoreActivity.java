@@ -17,11 +17,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.elemei.R;
 import com.example.elemei.view.adapter.CommodityAdapter;
+import com.example.elemei.view.net.CommodityCall;
 import com.example.elemei.view.pojo.Commodity;
+import com.example.elemei.view.pojo.CommodityBean;
 import com.example.elemei.view.util.MyItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Date:2021/4/14
@@ -40,6 +46,8 @@ public class StoreActivity extends AppCompatActivity {
     private TextView store_distribution;
     private TextView store_start_send;
     private RecyclerView commodity_recycle;
+    private CommodityAdapter commodityAdapter;
+    private CommodityCall commodityCall;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,23 +55,31 @@ public class StoreActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_store);
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        id = (int) getIntent().getIntExtra("id",1);
+        id = getIntent().getIntExtra("id",1);
         cover = getIntent().getStringExtra("cover");
         name =getIntent().getStringExtra("name");
         start_send = getIntent().getDoubleExtra("start_send",1);
         distribution = getIntent().getDoubleExtra("distribution",0.5);
-        Log.e("TAG", "onCreate: id"+id+cover+name+start_send+distribution);
+//        Log.e("TAG", "onCreate: id"+id+cover+name+start_send+distribution);
         initView();
-        List<Commodity> commodities = new ArrayList<>();
-        for (int i=0;i<15;i++){
-            commodities.add(new Commodity());
-        }
-        CommodityAdapter commodityAdapter = new CommodityAdapter(commodities);
-        commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
-        commodity_recycle.setAdapter(commodityAdapter);
-        commodity_recycle.addItemDecoration(new MyItemDecoration());
+        commodityCall = new CommodityCall();
+
+        commodityCall.selectById(id, new Callback<CommodityBean>() {
+            @Override
+            public void onResponse(Call<CommodityBean> call, Response<CommodityBean> response) {
+                Log.e("TAG", "onResponse: "+response.body().toString());
+                List<Commodity> commodities = response.body().getResult();
+                commodityAdapter = new CommodityAdapter(commodities);
+                commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
+                commodity_recycle.setAdapter(commodityAdapter);
+                commodity_recycle.addItemDecoration(new MyItemDecoration());
+            }
+
+            @Override
+            public void onFailure(Call<CommodityBean> call, Throwable t) {
+                Log.e("TAG", "onFailure: "+t.toString());
+            }
+        });
     }
 
     //初始化view

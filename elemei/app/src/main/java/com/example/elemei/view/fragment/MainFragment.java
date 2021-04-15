@@ -200,6 +200,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
             @Override
             public void onFailure(Call<StoreBean> call, Throwable t) {
                 Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -244,6 +245,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
                 if (state == State.COLLAPSED) {
                     statusbar.setBackgroundColor(getResources().getColor(R.color.white));
                     appBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
+                    swipeRefreshLayout.setEnabled(false);
                 }
             }
         });

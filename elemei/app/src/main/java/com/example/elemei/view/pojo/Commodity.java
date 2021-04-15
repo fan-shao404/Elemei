@@ -10,16 +10,26 @@ public class Commodity {
     private String cover;
     private String name;
     private double price;
+    private Integer store_id;
 
     public Commodity() {
 
     }
 
-    public Commodity(Integer id, String cover, String name, double price) {
+    public Commodity(Integer id, String cover, String name, double price, Integer store_id) {
         this.id = id;
         this.cover = cover;
         this.name = name;
         this.price = price;
+        this.store_id = store_id;
+    }
+
+    public Integer getStore_id() {
+        return store_id;
+    }
+
+    public void setStore_id(Integer store_id) {
+        this.store_id = store_id;
     }
 
     public Integer getId() {
@@ -61,6 +71,7 @@ public class Commodity {
                 ", cover='" + cover + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
+                "store_id=" + store_id +
                 '}';
     }
 }

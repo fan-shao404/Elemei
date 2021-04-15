@@ -1,5 +1,9 @@
 package com.example.elemei.view.adapter;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.elemei.R;
@@ -26,6 +30,11 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, Commodity commodity) {
-
+        baseViewHolder.setText(R.id.tv_commodity_name,commodity.getName());
+        ImageView cover = baseViewHolder.findView(R.id.iv_commodity_cover);
+        Glide.with(getContext()).load(commodity.getCover())
+                .transform(new RoundedCorners(15))
+                .into(cover);
+        baseViewHolder.setText(R.id.tv_commodity_price,"￥"+commodity.getPrice());
     }
 }

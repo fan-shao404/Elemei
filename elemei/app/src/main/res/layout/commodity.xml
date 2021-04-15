@@ -11,7 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="@dimen/dp_10"
-        android:background="@color/blue"
+        android:scaleType="fitXY"
         android:layout_width="80dp"
         android:layout_height="80dp"/>
 
