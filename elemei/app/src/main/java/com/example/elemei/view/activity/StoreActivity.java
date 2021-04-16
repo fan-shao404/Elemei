@@ -18,6 +18,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.elemei.R;
 import com.example.elemei.view.adapter.CommodityAdapter;
 import com.example.elemei.view.net.CommodityCall;
+import com.example.elemei.view.net.ShoppingCarCall;
+import com.example.elemei.view.pojo.CheckedCommmodityBean;
+import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.CommodityBean;
 import com.example.elemei.view.util.MyItemDecoration;
@@ -45,9 +48,13 @@ public class StoreActivity extends AppCompatActivity {
     private TextView store_name;
     private TextView store_distribution;
     private TextView store_start_send;
+    private TextView total;
     private RecyclerView commodity_recycle;
     private CommodityAdapter commodityAdapter;
     private CommodityCall commodityCall;
+    private ShoppingCarCall shoppingCarCall;
+    private List<CheckedCommodity> checkedCommodities;
+    private int sum;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,20 +62,36 @@ public class StoreActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_store);
-        id = getIntent().getIntExtra("id",1);
+        id = getIntent().getIntExtra("id", 1);
         cover = getIntent().getStringExtra("cover");
-        name =getIntent().getStringExtra("name");
-        start_send = getIntent().getDoubleExtra("start_send",1);
-        distribution = getIntent().getDoubleExtra("distribution",0.5);
+        name = getIntent().getStringExtra("name");
+        start_send = getIntent().getDoubleExtra("start_send", 1);
+        distribution = getIntent().getDoubleExtra("distribution", 0.5);
 //        Log.e("TAG", "onCreate: id"+id+cover+name+start_send+distribution);
         initView();
         commodityCall = new CommodityCall();
+        shoppingCarCall = new ShoppingCarCall();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Response<CheckedCommmodityBean> checkedCommmodityBean = shoppingCarCall.selectAll(id, 59);
+                if (checkedCommmodityBean != null) {
+                    checkedCommodities = checkedCommmodityBean.body().getResult();
+                }
+                if (checkedCommodities != null && checkedCommodities.size() > 0) {
+                    for (CheckedCommodity checkedCommodity : checkedCommodities) {
+                        sum += checkedCommodity.getPrice() * checkedCommodity.getNumber();
+                    }
+                }
+            }
+        }).start();
         commodityCall.selectById(id, new Callback<CommodityBean>() {
             @Override
             public void onResponse(Call<CommodityBean> call, Response<CommodityBean> response) {
-                Log.e("TAG", "onResponse: "+response.body().toString());
+                Log.e("TAG", "onResponse: " + response.body().toString());
                 List<Commodity> commodities = response.body().getResult();
                 commodityAdapter = new CommodityAdapter(commodities);
+                commodityAdapter.setCheckedCommodities(checkedCommodities);
                 commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
                 commodity_recycle.setAdapter(commodityAdapter);
                 commodity_recycle.addItemDecoration(new MyItemDecoration());
@@ -76,13 +99,14 @@ public class StoreActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<CommodityBean> call, Throwable t) {
-                Log.e("TAG", "onFailure: "+t.toString());
+                Log.e("TAG", "onFailure: " + t.toString());
             }
         });
+        total.setText("￥" + sum);
     }
 
     //初始化view
-    public void initView(){
+    public void initView() {
         header = findViewById(R.id.iv_homepage_store_header);
         Glide.with(StoreActivity.this).load(cover)
                 .into(header);
@@ -93,9 +117,10 @@ public class StoreActivity extends AppCompatActivity {
         store_name = findViewById(R.id.tv_homepage_store_name);
         store_name.setText(name);
         store_distribution = findViewById(R.id.tv_homepage_store_distribution);
-        store_distribution.setText("另需要配送费￥"+distribution);
+        store_distribution.setText("另需要配送费￥" + distribution);
         store_start_send = findViewById(R.id.tv_homepage_store_start_send);
-        store_start_send.setText("￥"+start_send+"起送");
+        store_start_send.setText("￥" + start_send + "起送");
         commodity_recycle = findViewById(R.id.rv_activity_store_commodity);
+        total = findViewById(R.id.tv_homepage_sum);
     }
 }

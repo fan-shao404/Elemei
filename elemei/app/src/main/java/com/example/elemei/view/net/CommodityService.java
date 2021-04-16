@@ -12,7 +12,7 @@ import retrofit2.http.Query;
  */
 public interface CommodityService {
 
-    @GET("commodity/selectbyid")
+    @GET("commodity/selectById")
     Call<CommodityBean> selectById(@Query("store_id") int id);
 
 }
