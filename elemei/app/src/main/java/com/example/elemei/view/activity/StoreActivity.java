@@ -63,7 +63,6 @@ public class StoreActivity extends AppCompatActivity {
 //        Log.e("TAG", "onCreate: id"+id+cover+name+start_send+distribution);
         initView();
         commodityCall = new CommodityCall();
-
         commodityCall.selectById(id, new Callback<CommodityBean>() {
             @Override
             public void onResponse(Call<CommodityBean> call, Response<CommodityBean> response) {
