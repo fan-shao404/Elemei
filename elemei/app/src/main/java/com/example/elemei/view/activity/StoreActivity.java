@@ -7,6 +7,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +20,15 @@ import com.example.elemei.R;
 import com.example.elemei.view.adapter.CommodityAdapter;
 import com.example.elemei.view.net.CommodityCall;
 import com.example.elemei.view.net.ShoppingCarCall;
+import com.example.elemei.view.pojo.Change;
 import com.example.elemei.view.pojo.CheckedCommmodityBean;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.CommodityBean;
 import com.example.elemei.view.util.MyItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +53,15 @@ public class StoreActivity extends AppCompatActivity {
     private TextView store_name;
     private TextView store_distribution;
     private TextView store_start_send;
-    private TextView total;
     private RecyclerView commodity_recycle;
-    private CommodityAdapter commodityAdapter;
+    private CommodityAdapter commodityAdapter = new CommodityAdapter();
     private CommodityCall commodityCall;
     private ShoppingCarCall shoppingCarCall;
     private List<CheckedCommodity> checkedCommodities;
+    private TextView total;
     private int sum;
+    private TextView counts;
+    private int count;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,42 +74,50 @@ public class StoreActivity extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         start_send = getIntent().getDoubleExtra("start_send", 1);
         distribution = getIntent().getDoubleExtra("distribution", 0.5);
-//        Log.e("TAG", "onCreate: id"+id+cover+name+start_send+distribution);
         initView();
         commodityCall = new CommodityCall();
         shoppingCarCall = new ShoppingCarCall();
-        new Thread(new Runnable() {
+        shoppingCarCall.selectAll(id, 59, new Callback<CheckedCommmodityBean>() {
             @Override
-            public void run() {
-                Response<CheckedCommmodityBean> checkedCommmodityBean = shoppingCarCall.selectAll(id, 59);
-                if (checkedCommmodityBean != null) {
-                    checkedCommodities = checkedCommmodityBean.body().getResult();
-                }
-                if (checkedCommodities != null && checkedCommodities.size() > 0) {
+            public void onResponse(Call<CheckedCommmodityBean> call, Response<CheckedCommmodityBean> response) {
+                if (response.body().getResult() != null && response.body().getResult().size() > 0) {
+                    checkedCommodities = response.body().getResult();
+                    commodityAdapter.setCheckedCommodities(checkedCommodities);
                     for (CheckedCommodity checkedCommodity : checkedCommodities) {
                         sum += checkedCommodity.getPrice() * checkedCommodity.getNumber();
+                        count += checkedCommodity.getNumber();
+                    }
+                    total.setText("￥" + sum);
+                    counts.setText("" + count);
+                    if (sum < start_send) {
+                        store_start_send.setText("差￥" + (start_send - count) + "起送");
+                    } else {
+                        store_start_send.setText("去结算");
                     }
                 }
-            }
-        }).start();
-        commodityCall.selectById(id, new Callback<CommodityBean>() {
-            @Override
-            public void onResponse(Call<CommodityBean> call, Response<CommodityBean> response) {
-                Log.e("TAG", "onResponse: " + response.body().toString());
-                List<Commodity> commodities = response.body().getResult();
-                commodityAdapter = new CommodityAdapter(commodities);
-                commodityAdapter.setCheckedCommodities(checkedCommodities);
-                commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
-                commodity_recycle.setAdapter(commodityAdapter);
-                commodity_recycle.addItemDecoration(new MyItemDecoration());
+                commodityCall.selectById(id, new Callback<CommodityBean>() {
+                    @Override
+                    public void onResponse(Call<CommodityBean> call, Response<CommodityBean> response) {
+                        Log.e("TAG", "onResponse: " + response.body().toString());
+                        List<Commodity> commodities = response.body().getResult();
+                        commodityAdapter.setList(commodities);
+                        commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
+                        commodity_recycle.setAdapter(commodityAdapter);
+                        commodity_recycle.addItemDecoration(new MyItemDecoration());
+                    }
+
+                    @Override
+                    public void onFailure(Call<CommodityBean> call, Throwable t) {
+                        Log.e("TAG", "onFailure: " + t.toString());
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<CommodityBean> call, Throwable t) {
-                Log.e("TAG", "onFailure: " + t.toString());
+            public void onFailure(Call<CheckedCommmodityBean> call, Throwable t) {
+                Log.e("TAG", "onFailure: hhhhhhhh");
             }
         });
-        total.setText("￥" + sum);
     }
 
     //初始化view
@@ -122,5 +137,40 @@ public class StoreActivity extends AppCompatActivity {
         store_start_send.setText("￥" + start_send + "起送");
         commodity_recycle = findViewById(R.id.rv_activity_store_commodity);
         total = findViewById(R.id.tv_homepage_sum);
+        counts = findViewById(R.id.tv_homepage_count);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe
+    public void update(Change change) {
+        if (change.getOperation() == Change.Operation.INSERT) {
+            checkedCommodities.add(change.getCheckedCommodity());
+            counts.setText("" + (++count));
+        } else if (change.getOperation() == Change.Operation.ADD) {
+            int id = change.getCheckedCommodity().getcommodity_id();
+            for (CheckedCommodity checkedCommodity : checkedCommodities) {
+                if (checkedCommodity.getcommodity_id() == id) {
+                    checkedCommodity.setNumber(checkedCommodity.getNumber() + 1);
+                }
+            }
+            counts.setText("" + (++count));
+        } else if (change.getOperation() == Change.Operation.SUBTRACT) {
+            int id = change.getCheckedCommodity().getcommodity_id();
+            for (CheckedCommodity checkedCommodity : checkedCommodities) {
+                if (checkedCommodity.getcommodity_id() == id) {
+                    checkedCommodity.setNumber(checkedCommodity.getNumber() - 1);
+                }
+            }
+            counts.setText("" + (--count));
+        } else {
+            checkedCommodities.remove(change.getCheckedCommodity());
+            counts.setText("" + (--count));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

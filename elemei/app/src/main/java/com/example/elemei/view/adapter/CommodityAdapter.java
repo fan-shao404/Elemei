@@ -12,10 +12,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.elemei.R;
 import com.example.elemei.view.net.ShoppingCarCall;
+import com.example.elemei.view.pojo.Change;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.InsertBean;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +38,10 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
 
     public List<CheckedCommodity> getCheckedCommodities() {
         return checkedCommodities;
+    }
+
+    public CommodityAdapter() {
+        super(R.layout.commodity);
     }
 
     public void setCheckedCommodities(List<CheckedCommodity> checkedCommodities) {
@@ -71,11 +77,13 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             textView.setText("0");
                             baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(false);
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.DELETE));
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
-                            Log.e("TAG", "onFailure: " + "delete");
+                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -85,12 +93,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                             Log.e("TAG", "onResponse: " + response.body().toString());
                             TextView textView = baseViewHolder.getView(R.id.tv_commodity_sum);
                             baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) - 1));
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            EventBus.getDefault().post(new Change(checkedCommodity,Change.Operation.SUBTRACT));
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
                             Log.e("TAG", "onFailure: " + t.toString());
-                            Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -105,6 +115,8 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             textView.setText("1");
                             baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(true);
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.INSERT));
                         }
 
                         @Override
@@ -112,13 +124,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                             Log.e("TAG", "onFailure: " + "insert");
                         }
                     });
-
                 } else {
                     shoppingCarCall.add(commodity.getId(), 59, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());
                             baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) + 1));
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.ADD));
 
                         }
 

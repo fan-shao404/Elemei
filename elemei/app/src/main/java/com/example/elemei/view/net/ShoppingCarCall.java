@@ -51,12 +51,7 @@ public class ShoppingCarCall extends BaseCall<ShoppingCarService> {
     }
 
     //查询一个商家的购物车列表
-    public Response<CheckedCommmodityBean> selectAll(int store_id, int customer_id) {
-        try {
-            return shoppingCarService.selectAll(store_id, customer_id).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void selectAll(int store_id, int customer_id , Callback<CheckedCommmodityBean> callback) {
+        shoppingCarService.selectAll(store_id, customer_id).enqueue(callback);
     }
 }
