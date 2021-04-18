@@ -3,6 +3,9 @@ package com.example.elemei.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -25,6 +28,7 @@ import com.example.elemei.view.pojo.CheckedCommmodityBean;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.CommodityBean;
+import com.example.elemei.view.popupwindow.ShoppingCarPopupWindow;
 import com.example.elemei.view.util.MyItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,11 +61,13 @@ public class StoreActivity extends AppCompatActivity {
     private CommodityAdapter commodityAdapter = new CommodityAdapter();
     private CommodityCall commodityCall;
     private ShoppingCarCall shoppingCarCall;
-    private List<CheckedCommodity> checkedCommodities;
+    private List<CheckedCommodity> checkedCommodities = new ArrayList<>();
     private TextView total;
-    private int sum;
+    private View shopping_car;
+    private double sum;
     private TextView counts;
     private int count;
+    private int bottom_height;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +100,8 @@ public class StoreActivity extends AppCompatActivity {
                     } else {
                         store_start_send.setText("去结算");
                     }
+                } else {
+                    shopping_car.setClickable(false);
                 }
                 commodityCall.selectById(id, new Callback<CommodityBean>() {
                     @Override
@@ -138,6 +146,22 @@ public class StoreActivity extends AppCompatActivity {
         commodity_recycle = findViewById(R.id.rv_activity_store_commodity);
         total = findViewById(R.id.tv_homepage_sum);
         counts = findViewById(R.id.tv_homepage_count);
+        shopping_car = findViewById(R.id.view_homepage_store_shopping_car);
+        shopping_car.post(new Runnable() {
+            @Override
+            public void run() {
+                bottom_height = shopping_car.getHeight();
+            }
+        });
+        shopping_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View rootview = LayoutInflater.from(StoreActivity.this).inflate(R.layout.activity_store,null);
+                ShoppingCarPopupWindow shoppingCarPopupWindow = new ShoppingCarPopupWindow(StoreActivity.this,checkedCommodities);
+                shoppingCarPopupWindow.showAtLocation(rootview, Gravity.BOTTOM,0,bottom_height);
+                Log.e("TAG", "onClick: "+bottom_height);
+            }
+        });
         EventBus.getDefault().register(this);
     }
 
@@ -145,7 +169,8 @@ public class StoreActivity extends AppCompatActivity {
     public void update(Change change) {
         if (change.getOperation() == Change.Operation.INSERT) {
             checkedCommodities.add(change.getCheckedCommodity());
-            counts.setText("" + (++count));
+            ++count;
+            sum = sum + change.getCheckedCommodity().getPrice();
         } else if (change.getOperation() == Change.Operation.ADD) {
             int id = change.getCheckedCommodity().getcommodity_id();
             for (CheckedCommodity checkedCommodity : checkedCommodities) {
@@ -153,7 +178,8 @@ public class StoreActivity extends AppCompatActivity {
                     checkedCommodity.setNumber(checkedCommodity.getNumber() + 1);
                 }
             }
-            counts.setText("" + (++count));
+            ++count;
+            sum = sum + change.getCheckedCommodity().getPrice();
         } else if (change.getOperation() == Change.Operation.SUBTRACT) {
             int id = change.getCheckedCommodity().getcommodity_id();
             for (CheckedCommodity checkedCommodity : checkedCommodities) {
@@ -161,10 +187,25 @@ public class StoreActivity extends AppCompatActivity {
                     checkedCommodity.setNumber(checkedCommodity.getNumber() - 1);
                 }
             }
-            counts.setText("" + (--count));
+            --count;
+            sum = sum - change.getCheckedCommodity().getPrice();
         } else {
             checkedCommodities.remove(change.getCheckedCommodity());
-            counts.setText("" + (--count));
+            --count;
+            sum = sum - change.getCheckedCommodity().getPrice();
+        }
+        counts.setText("" + count);
+        total.setText("￥" + sum);
+        if (sum < start_send) {
+            store_start_send.setText("差￥" + (start_send - sum) + "起送");
+        } else {
+            store_start_send.setText("去结算");
+        }
+        if (count <= 0) {
+            shopping_car.setClickable(false);
+            int a = 0;
+        } else {
+            shopping_car.setClickable(true);
         }
     }
 

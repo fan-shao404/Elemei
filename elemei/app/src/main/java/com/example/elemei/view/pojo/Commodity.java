@@ -6,17 +6,17 @@ package com.example.elemei.view.pojo;
  */
 public class Commodity {
 
-    private Integer id;
+    private int id;
     private String cover;
     private String name;
     private double price;
-    private Integer store_id;
+    private int store_id;
 
     public Commodity() {
 
     }
 
-    public Commodity(Integer id, String cover, String name, double price, Integer store_id) {
+    public Commodity(int id, String cover, String name, double price, int store_id) {
         this.id = id;
         this.cover = cover;
         this.name = name;
@@ -24,19 +24,19 @@ public class Commodity {
         this.store_id = store_id;
     }
 
-    public Integer getStore_id() {
+    public int getStore_id() {
         return store_id;
     }
 
-    public void setStore_id(Integer store_id) {
+    public void setStore_id(int store_id) {
         this.store_id = store_id;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_commodity_cover"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_commodity_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_40"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="煎包5个"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintLeft_toRightOf="@+id/iv_commodity_cover"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_commodity_cover" />
+
+    <TextView
+        android:id="@+id/tv_commodity_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="￥100"
+        android:textColor="#FF0016"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_commodity_cover"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_commodity_name" />
+
+    <ImageView
+        android:id="@+id/iv_commodity_add"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@mipmap/ic_commodity_add"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_commodity_cover"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_commodity_sum"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="50dp"
+        android:gravity="center"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_commodity_cover"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_commodity_subtract"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="80dp"
+        android:background="@mipmap/ic_commodity_subtract"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_commodity_cover"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

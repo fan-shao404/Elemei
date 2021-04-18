@@ -1,17 +1,19 @@
 package com.example.elemei.view.pojo;
 
+import java.util.Objects;
+
 /**
  * Date:2021/4/16
  * Author:fanshaofeng
  */
 public class CheckedCommodity {
-    private Integer commodity_id;
+    private int commodity_id;
     private String cover;
     private String name;
-    private Double price;
-    private Integer number;
+    private double price;
+    private int number;
 
-    public CheckedCommodity(Integer commodity_id, String cover, String name, Double price, Integer number) {
+    public CheckedCommodity(int commodity_id, String cover, String name, double price, int number) {
         this.commodity_id = commodity_id;
         this.cover = cover;
         this.name = name;
@@ -19,11 +21,11 @@ public class CheckedCommodity {
         this.number = number;
     }
 
-    public Integer getcommodity_id() {
+    public int getcommodity_id() {
         return commodity_id;
     }
 
-    public void setcommodity_id(Integer commodity_id) {
+    public void setcommodity_id(int commodity_id) {
         this.commodity_id = commodity_id;
     }
 
@@ -43,19 +45,19 @@ public class CheckedCommodity {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public Integer getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -68,5 +70,22 @@ public class CheckedCommodity {
                 ", price=" + price +
                 ", number=" + number +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckedCommodity that = (CheckedCommodity) o;
+        return commodity_id == that.commodity_id &&
+                Double.compare(that.price, price) == 0 &&
+                number == that.number &&
+                Objects.equals(cover, that.cover) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commodity_id, cover, name, price, number);
     }
 }

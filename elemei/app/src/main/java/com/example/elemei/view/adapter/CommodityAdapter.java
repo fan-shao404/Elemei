@@ -62,10 +62,12 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
             for (CheckedCommodity checkedCommodity : checkedCommodities) {
                 if (checkedCommodity.getcommodity_id() == commodity.getId()) {
                     baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(checkedCommodity.getNumber()));
+                    Log.e("TAG", "convert: "+checkedCommodity.getName()+checkedCommodity.getNumber());
                 }
             }
         }
         TextView textView = baseViewHolder.getView(R.id.tv_commodity_sum);
+        //向购物车-1
         baseViewHolder.getView(R.id.iv_commodity_subtract).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +108,7 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                 }
             }
         });
+        //从购物车中+1
         baseViewHolder.getView(R.id.iv_commodity_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
