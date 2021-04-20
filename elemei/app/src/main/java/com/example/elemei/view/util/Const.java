@@ -6,5 +6,5 @@ package com.example.elemei.view.util;
  */
 public class Const {
     public static int customer_id = 0;
-    public static String nickname = "hello word";
+    public static String nickname = "立即登录";
 }

@@ -80,11 +80,7 @@ public class StoreActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_store);
-        Log.e("TAG", "onCreate: "+Const.customer_id);
-        Log.e("TAG", "onCreate: "+Const.nickname);
         id = getIntent().getIntExtra("id", 1);
-        Const.customer_id = 59;
-        Const.nickname = "good morning prienes";
         cover = getIntent().getStringExtra("cover");
         name = getIntent().getStringExtra("name");
         start_send = getIntent().getDoubleExtra("start_send", 1);
@@ -92,7 +88,7 @@ public class StoreActivity extends AppCompatActivity {
         initView();
         commodityCall = new CommodityCall();
         shoppingCarCall = new ShoppingCarCall();
-        shoppingCarCall.selectAll(id, 59, new Callback<CheckedCommmodityBean>() {
+        shoppingCarCall.selectAll(id, Const.customer_id, new Callback<CheckedCommmodityBean>() {
             @Override
             public void onResponse(Call<CheckedCommmodityBean> call, Response<CheckedCommmodityBean> response) {
                 if (response.body().getResult() != null && response.body().getResult().size() > 0) {
@@ -169,7 +165,7 @@ public class StoreActivity extends AppCompatActivity {
             public void onClick(View v) {
                 View rootview = LayoutInflater.from(StoreActivity.this).inflate(R.layout.activity_store, null);
                 shoppingCarPopupWindow = new ShoppingCarPopupWindow(StoreActivity.this, checkedCommodities);
-                shoppingCarPopupWindow.setCustomer_id(59);
+                shoppingCarPopupWindow.setCustomer_id(Const.customer_id);
                 shoppingCarPopupWindow.setStore_id(id);
                 shoppingCarPopupWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, bottom_height);
                 Log.e("TAG", "onClick: " + bottom_height);

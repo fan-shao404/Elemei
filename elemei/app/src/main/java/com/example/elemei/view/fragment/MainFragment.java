@@ -24,6 +24,7 @@ import com.example.elemei.view.net.StoreCall;
 import com.example.elemei.view.pojo.Store;
 import com.example.elemei.view.pojo.StoreBean;
 import com.example.elemei.view.util.AppBarStateChangeListenner;
+import com.example.elemei.view.util.Const;
 import com.example.elemei.view.util.MyItemDecoration;
 import com.example.elemei.view.util.NetUtils;
 import com.example.elemei.view.util.StatusBarUtils;
@@ -41,7 +42,6 @@ import retrofit2.Response;
 
 public class MainFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private boolean login;
     private View view;
     private RecyclerView recyclerView;
     private StoreCall storeCall = new StoreCall();
@@ -60,8 +60,10 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
 
     @Override
     public void onResume() {
-        if (login) {
+        if (Const.customer_id > 0) {
             view.setVisibility(View.INVISIBLE);
+        } else {
+            view.setVisibility(View.VISIBLE);
         }
         super.onResume();
     }
@@ -81,7 +83,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_message:
-                if (!login) {
+                if (Const.customer_id == 0) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 } else {
                     Toast.makeText(getActivity(), "功能还在开发中", Toast.LENGTH_SHORT).show();
@@ -91,7 +93,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
             case R.id.view_search:
-                if (!login) {
+                if (Const.customer_id == 0) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 } else {
                     Toast.makeText(getActivity(), "功能还在开发", Toast.LENGTH_SHORT).show();
@@ -100,15 +102,9 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
         }
     }
 
-    @Subscribe
-    public void login(Login login) {
-        this.login = login.isLogin();
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     //渲染stores 数据
@@ -116,7 +112,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
         storeCall.selectAll(new Callback<StoreBean>() {
             @Override
             public void onResponse(Call<StoreBean> call, Response<StoreBean> response) {
-                Log.e("TAG", "onResponse: " + response.code() + response.body().getResult().size());
                 if (response.body().isResult && response.body().getResult() != null) {
                     List<Store> stores = new ArrayList<>();
                     List<Store> noodle_stores = new ArrayList<>();
@@ -137,7 +132,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
                     }
                     recyclerView = getView().findViewById(R.id.rv_fragment_main_store);
                     storeAdapter = new StoreAdapter(R.layout.store);
-                    Log.e("TAG", "onResponse: current"+current_stores.size()+pickled_stores.size()+stores.size());
                     storeAdapter.setList(stores);
                     recyclerView.setAdapter(storeAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -199,7 +193,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
 
             @Override
             public void onFailure(Call<StoreBean> call, Throwable t) {
-                Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -223,7 +217,6 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
         view = getView().findViewById(R.id.view_login);
         swipeRefreshLayout = getView().findViewById(R.id.refresh_main);
         swipeRefreshLayout.setOnRefreshListener(this);
-        EventBus.getDefault().register(this);
         View statusbar = getView().findViewById(R.id.view_statusbar);
         StatusBarUtils.setStatusBarHeight(getActivity(),statusbar);
         AppBarLayout appBarLayout = getView().findViewById(R.id.abl_main);

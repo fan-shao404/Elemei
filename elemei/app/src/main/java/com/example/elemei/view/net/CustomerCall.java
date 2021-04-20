@@ -27,8 +27,8 @@ public class CustomerCall extends BaseCall<CustomerServices> {
         customerServices.registerCustomer(phone,email,password).enqueue(callback);
     }
     //登录判断是否存在客户
-    public void count(String phone, String password, Callback<CountBean> callback){
-        customerServices.count(phone,password).enqueue(callback);
+    public void select(String phone, String password, Callback<CustomerBean> callback){
+        customerServices.select(phone,password).enqueue(callback);
     }
     //测试用的测试selectall
     public void selectAll(Callback<CustomerBean> callback ){

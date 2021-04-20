@@ -21,9 +21,9 @@ public interface CustomerServices {
     @FormUrlEncoded
     Call<InsertBean> registerCustomer(@Field("phone") String phone, @Field("email") String email, @Field("password") String password);
 
-    @POST("customer/count")
+    @POST("customer/select")
     @FormUrlEncoded
-    Call<CountBean> count(@Field("phone") String phone,@Field("password") String password);
+    Call<CustomerBean> select(@Field("phone") String phone,@Field("password") String password);
 
     @GET(value = "customer/selectAll")
     Call<CustomerBean> selectAll();

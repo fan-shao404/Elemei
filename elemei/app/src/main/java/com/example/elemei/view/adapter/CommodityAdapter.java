@@ -16,6 +16,7 @@ import com.example.elemei.view.pojo.Change;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.InsertBean;
+import com.example.elemei.view.util.Const;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,10 +75,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
         baseViewHolder.getView(R.id.iv_commodity_subtract).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Const.customer_id == 0 ) {
+                    Toast.makeText(getContext(),"登录后开启更多功能，测试账号tel：1，pwd：6",Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (Integer.valueOf(String.valueOf(textView.getText())) == 0) {
                     baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(false);
                 } else if (Integer.valueOf(String.valueOf(textView.getText())) == 1) {
-                    shoppingCarCall.delete(commodity.getId(), 59, new Callback<InsertBean>() {
+                    shoppingCarCall.delete(commodity.getId(), Const.customer_id, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(false);
@@ -91,7 +96,7 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         }
                     });
                 } else {
-                    shoppingCarCall.subtract(commodity.getId(), 59, new Callback<InsertBean>() {
+                    shoppingCarCall.subtract(commodity.getId(), Const.customer_id, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());
@@ -112,8 +117,13 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
         baseViewHolder.getView(R.id.iv_commodity_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Const.customer_id == 0 ) {
+                    Toast.makeText(getContext(),"登录后开启更多功能，测试账号tel：1，pwd：6",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Log.e("TAG", "onClick: ");
                 if (Integer.valueOf(String.valueOf(textView.getText())) == 0) {
-                    shoppingCarCall.insert(commodity.getId(), commodity.getStore_id(), 59, new Callback<InsertBean>() {
+                    shoppingCarCall.insert(commodity.getId(), commodity.getStore_id(), Const.customer_id, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse:-----1 ");
@@ -130,7 +140,7 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         }
                     });
                 } else {
-                    shoppingCarCall.add(commodity.getId(), 59, new Callback<InsertBean>() {
+                    shoppingCarCall.add(commodity.getId(), Const.customer_id, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());

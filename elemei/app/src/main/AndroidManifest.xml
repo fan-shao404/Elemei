@@ -35,6 +35,9 @@
             android:name=".view.activity.StoreActivity"
             android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".view.activity.SettingActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>
 
 </manifest>
