@@ -40,7 +40,7 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
     }
 
     public ShoppingCarAdapter(@NotNull List<CheckedCommodity> data) {
-        super(R.layout.shopping_car_commodity,data);
+        super(R.layout.shopping_car_commodity, data);
     }
 
     public ShoppingCarAdapter(int layoutResId) {
@@ -55,7 +55,7 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
                 .transform(new RoundedCorners(15))
                 .into(cover);
         baseViewHolder.setText(R.id.tv_commodity_price, "￥" + checkedCommodity.getPrice());
-        baseViewHolder.setText(R.id.tv_commodity_sum,""+checkedCommodity.getNumber());
+        baseViewHolder.setText(R.id.tv_commodity_sum, "" + checkedCommodity.getNumber());
         TextView textView = baseViewHolder.getView(R.id.tv_commodity_sum);
         baseViewHolder.getView(R.id.iv_commodity_add).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,7 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
-                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "emmmmm............", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -98,13 +98,13 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());
                             baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) - 1));
-                            EventBus.getDefault().post(new Change(checkedCommodity,Change.Operation.SUBTRACT));
+                            EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.SUBTRACT));
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
                             Log.e("TAG", "onFailure: " + t.toString());
-                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "emmmmm............", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

@@ -13,6 +13,10 @@ public class CheckedCommodity {
     private double price;
     private int number;
 
+    public CheckedCommodity() {
+
+    }
+
     public CheckedCommodity(int commodity_id, String cover, String name, double price, int number) {
         this.commodity_id = commodity_id;
         this.cover = cover;

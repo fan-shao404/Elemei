@@ -18,9 +18,11 @@ import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.InsertBean;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -62,11 +64,12 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
             for (CheckedCommodity checkedCommodity : checkedCommodities) {
                 if (checkedCommodity.getcommodity_id() == commodity.getId()) {
                     baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(checkedCommodity.getNumber()));
-                    Log.e("TAG", "convert: "+checkedCommodity.getName()+checkedCommodity.getNumber());
+                    Log.e("TAG", "convert: " + checkedCommodity.getName() + checkedCommodity.getNumber());
                 }
             }
         }
         TextView textView = baseViewHolder.getView(R.id.tv_commodity_sum);
+        Log.e("TAG", "update: sum");
         //向购物车-1
         baseViewHolder.getView(R.id.iv_commodity_subtract).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,15 +80,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                     shoppingCarCall.delete(commodity.getId(), 59, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
-                            textView.setText("0");
                             baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(false);
-                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(), commodity.getCover(), commodity.getName(), commodity.getPrice(), 1);
                             EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.DELETE));
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
-                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "emmmmm............", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -93,16 +95,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());
-                            TextView textView = baseViewHolder.getView(R.id.tv_commodity_sum);
-                            baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) - 1));
-                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
-                            EventBus.getDefault().post(new Change(checkedCommodity,Change.Operation.SUBTRACT));
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(), commodity.getCover(), commodity.getName(), commodity.getPrice(), 1);
+                            EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.SUBTRACT));
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
                             Log.e("TAG", "onFailure: " + t.toString());
-                            Toast.makeText(getContext(),"emmmmm............",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "emmmmm............", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -116,15 +116,17 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                     shoppingCarCall.insert(commodity.getId(), commodity.getStore_id(), 59, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
-                            textView.setText("1");
+                            Log.e("TAG", "onResponse:-----1 ");
                             baseViewHolder.getView(R.id.iv_commodity_subtract).setClickable(true);
-                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(), commodity.getCover(), commodity.getName(), commodity.getPrice(), 1);
                             EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.INSERT));
+                            Log.e("TAG", "onResponse:-----2 ");
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
                             Log.e("TAG", "onFailure: " + "insert");
+                            Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -132,16 +134,14 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                             Log.e("TAG", "onResponse: " + response.body().toString());
-                            baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) + 1));
-                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(),commodity.getCover(),commodity.getName(),commodity.getPrice(),1);
+                            CheckedCommodity checkedCommodity = new CheckedCommodity(commodity.getId(), commodity.getCover(), commodity.getName(), commodity.getPrice(), 1);
                             EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.ADD));
-
                         }
 
                         @Override
                         public void onFailure(Call<InsertBean> call, Throwable t) {
                             Log.e("TAG", "onFailure: " + t.toString());
-                            Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -154,4 +154,24 @@ public class CommodityAdapter extends BaseQuickAdapter<Commodity, BaseViewHolder
                 .into(cover);
         baseViewHolder.setText(R.id.tv_commodity_price, "￥" + commodity.getPrice());
     }
+
+    @Override
+    public void onBindViewHolder(@NotNull BaseViewHolder holder, int position, @NotNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        TextView textView = holder.getView(R.id.tv_commodity_sum);
+        if (payloads != null && payloads.size() > 0) {
+            Log.e("TAG", "onBindViewHolder: " + payloads.toString());
+            if ((int) (payloads.get(0)) == 1) {
+                Log.e("TAG", "onResponse:----- 1");
+                holder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) + 1));
+            } else if ((int) (payloads.get(0)) == 2) {
+                Log.e("TAG", "update: 2");
+                holder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) - 1));
+            } else {
+                Log.e("TAG", "update: 3");
+                holder.setText(R.id.tv_commodity_sum, "0");
+            }
+        }
+    }
+
 }

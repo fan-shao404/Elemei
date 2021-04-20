@@ -34,6 +34,7 @@ public class Change {
         ADD,
         SUBTRACT,
         INSERT,
-        DELETE
+        DELETE,
+        EMPTY
     }
 }
