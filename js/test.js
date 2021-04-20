@@ -26,7 +26,7 @@ app.all('*', function(req, res, next) {
     next();
  });
 
- app.get('/customer/selectAll',function(err,res){
+ app.get('/customer/selectAll',function(req,res){
      const sql ='select * from customer';
      connection.query(sql,function(err,result){
 	 if(err){
@@ -82,7 +82,125 @@ app.all('*', function(req, res, next) {
 	res.json(result);
 	});
  })
-
+ 
+ app.get('/store/selectAll',function(req,res){
+	const sql = 'select * from store_profile';
+	connection.query(sql,function(err,result){
+		if(err){
+			    console.log('select error -',err.message);
+			    return;
+		 }
+		result = {
+		          isResult:true,
+		          result: result
+		         };
+		res.json(result);
+	});
+ })
+ app.get('/commodity/selectById',function(req,res){
+	         const sql = 'select * from commodity_profile where store_id = ?';
+	          connection.query(sql,[req.query.store_id],function(err,result){
+	                  if(err){
+	                         console.log('select error -',err.message);
+	                          return;
+		                  }
+	                   result = {
+	                           isResult : true,
+	                            result:result
+		                    };
+	                   res.json(result);
+	           });
+	  })
+ app.post('/shoppingcar/insert',function(req,res){
+	const sql = 'insert into shopping_car (number,commodity_id,store_id,customer_id) values(1,?,?,?)';
+	var body = req.body;
+	connection.query(sql,[body.commodity_id,body.store_id,body.customer_id],function(err,result){
+		if(err){
+			console.log('insert error',err.msessage);
+			return;
+		}
+		result = {
+			isResult:true,
+			result:result
+		};
+		res.json(result);
+	});
+ })
+ app.post('/shoppingcar/add',function(req,res){
+	const sql = 'update shopping_car set number = number+1 where commodity_id =? and customer_id = ?';
+	var body = req.body;
+	connection.query(sql,[body.commodity_id,body.customer_id],function(err,result){
+		if(err){
+			console.log('update shoppingcar err',err.message);
+			return;
+		}
+		result = {
+			isResult:true,
+			result:result
+		};
+		res.json(result);
+	});
+ })
+ app.post('/shoppingcar/subtract',function(req,res){
+         const sql = 'update shopping_car set number = number-1 where commodity_id =? and customer_id = ?';
+         var body = req.body;
+         connection.query(sql,[body.commodity_id,body.customer_id],function(err,result){
+                 if(err){
+                         console.log('update shoppingcar err',err.message);
+                         return;
+                 }
+                 result = {
+                         isResult:true,
+                         result:result
+	                 };
+                 res.json(result);
+         });
+ })
+ app.post('/shoppingcar/delete',function(req,res){
+         const sql = 'delete from shopping_car where commodity_id =? and customer_id = ?';
+         var body = req.body;
+         connection.query(sql,[body.commodity_id,body.customer_id],function(err,result){
+                 if(err){
+                         console.log('delete shoppingcar err',err.message);
+                         return;
+	                 }
+                 result = {
+                        isResult:true,
+                        result:result
+                 };
+                 res.json(result);
+         });
+ })
+ app.post('/shoppingcar/deleteAll',function(req,res){
+          const sql = 'delete from shopping_car where store_id =? and customer_id = ?';
+          var body = req.body;
+          connection.query(sql,[body.store_id,body.customer_id],function(err,result){
+                   if(err){
+                          console.log('delete shoppingcar err',err.message);
+                          return;
+                    }
+                   result = {
+	                   isResult:true,
+                           result:result
+                   };
+                   res.json(result);
+          });
+})
+ app.post('/shoppingcar/selectAll',function(req,res){
+           const sql = 'select commodity_id, commodity_profile.name,commodity_profile.cover,commodity_profile.price,number from shopping_car ,commodity_profile where shopping_car.commodity_id = commodity_profile.id  and shopping_car.store_id =? and customer_id = ?';
+           var body = req.body;
+           connection.query(sql,[body.store_id,body.customer_id],function(err,result){
+                     if(err){
+                            console.log('select shoppingcar err',err.message);
+                            return;
+                      }
+                      result = {
+                               isResult:true,
+                               result:result
+                       };
+	               res.json(result);
+	   });
+ })
  var server = app.listen(3000,'0.0.0.0',function(){
      var host = server.address().address;
      var port =server.address().port;
