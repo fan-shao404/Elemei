@@ -68,10 +68,11 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
+                            android:id="@+id/iv_shopping_car"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_marginRight="55dp"
-                            android:src="@mipmap/ic_shaomao"
+                            android:src="@mipmap/ic_shopping_car"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

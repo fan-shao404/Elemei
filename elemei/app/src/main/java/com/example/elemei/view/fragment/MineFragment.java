@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.elemei.R;
 import com.example.elemei.view.activity.LoginActivity;
 import com.example.elemei.view.activity.SettingActivity;
+import com.example.elemei.view.activity.ShoppingCarActivity;
 import com.example.elemei.view.util.Const;
 import com.example.elemei.view.util.SPUtils;
 import com.example.elemei.view.util.StatusBarUtils;
@@ -27,6 +29,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private View statusbar;
     private ImageView cover;
     private TextView nickname;
+    private ImageView shopping_car;
 
     @Nullable
     @Override
@@ -59,6 +62,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_mine_nickname:
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 break;
+            case R.id.iv_shoppingcar:
+                if (Const.customer_id == 0) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(getActivity(), ShoppingCarActivity.class));
+                }
+                break;
             default:
                 break;
         }
@@ -74,5 +84,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 .into(cover);
         nickname = getView().findViewById(R.id.tv_mine_nickname);
         nickname.setOnClickListener(this);
+        shopping_car = getView().findViewById(R.id.iv_shoppingcar);
+        shopping_car.setOnClickListener(this);
     }
 }

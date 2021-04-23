@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.elemei.R;
+import com.example.elemei.view.activity.ShoppingCarActivity;
 import com.example.elemei.view.adapter.StoreAdapter;
 import com.example.elemei.view.activity.LoginActivity;
 import com.example.elemei.view.event.Login;
@@ -48,7 +51,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
     private List<Store> current_stores = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private StoreAdapter storeAdapter;
-    private MyItemDecoration myItemDecoration = new MyItemDecoration();
+    private MyItemDecoration myItemDecoration = new MyItemDecoration(0, 12);
 
     @Nullable
     @Override
@@ -98,6 +101,15 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
                 } else {
                     Toast.makeText(getActivity(), "功能还在开发", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.iv_shopping_car:
+                if (Const.customer_id == 0) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(getActivity(), ShoppingCarActivity.class));
+                }
+                break;
+            default:
                 break;
         }
     }
@@ -188,6 +200,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
                         recyclerView.addItemDecoration(myItemDecoration);
                     }
                     swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setBackgroundResource(R.color.grey);
                 }
             }
 
@@ -195,6 +208,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
             public void onFailure(Call<StoreBean> call, Throwable t) {
                 Toast.makeText(getActivity(), "系统错误", Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setBackgroundResource(R.mipmap.net_err);
             }
         });
     }
@@ -214,6 +228,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Swip
         getView().findViewById(R.id.tv_login).setOnClickListener(this);
         getView().findViewById(R.id.iv_message).setOnClickListener(this);
         getView().findViewById(R.id.view_search).setOnClickListener(this);
+        getView().findViewById(R.id.iv_shopping_car).setOnClickListener(this);
         view = getView().findViewById(R.id.view_login);
         swipeRefreshLayout = getView().findViewById(R.id.refresh_main);
         swipeRefreshLayout.setOnRefreshListener(this);

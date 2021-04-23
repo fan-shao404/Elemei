@@ -3,14 +3,18 @@ package com.example.elemei.view.pojo;
 import java.util.List;
 
 /**
- * Date:2021/4/16
+ * Date:2021/4/23
  * Author:fanshaofeng
  */
-public class CheckedCommmodityBean extends BaseBean {
+public class CheckedCommodityBean extends BaseBean {
 
     private List<CheckedCommodity> result;
 
-    public CheckedCommmodityBean(boolean isResult, List<CheckedCommodity> result) {
+    public CheckedCommodityBean(boolean isResult) {
+        super(isResult);
+    }
+
+    public CheckedCommodityBean(boolean isResult, List<CheckedCommodity> result) {
         super(isResult);
         this.result = result;
     }
@@ -25,13 +29,9 @@ public class CheckedCommmodityBean extends BaseBean {
 
     @Override
     public String toString() {
-        return "CheckedCommmodityBean{" +
+        return "CheckedCommodityBean{" +
                 "result=" + result +
                 ", isResult=" + isResult +
                 '}';
-    }
-
-    public CheckedCommmodityBean(boolean isResult) {
-        super(isResult);
     }
 }

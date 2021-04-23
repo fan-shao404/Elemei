@@ -13,6 +13,10 @@ public class Store {
     private double distribution;
     private String classification;
 
+    public Store() {
+
+    }
+
     public Store(Integer id,String name, String cover, double score, double start_send, double distribution, String classification) {
         this.id = id;
         this.name = name;

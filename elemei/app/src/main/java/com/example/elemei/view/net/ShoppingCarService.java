@@ -1,7 +1,9 @@
 package com.example.elemei.view.net;
 
-import com.example.elemei.view.pojo.CheckedCommmodityBean;
+import com.example.elemei.view.pojo.CheckedCommodity;
+import com.example.elemei.view.pojo.CheckedCommodityBean;
 import com.example.elemei.view.pojo.InsertBean;
+import com.example.elemei.view.pojo.StoreBean;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -37,5 +39,10 @@ public interface ShoppingCarService {
 
     @POST("shoppingcar/selectAll")
     @FormUrlEncoded
-    Call<CheckedCommmodityBean> selectAll(@Field("store_id") int store_id, @Field("customer_id") int customer_id);
+    Call<CheckedCommodityBean> selectAll(@Field("store_id") int store_id, @Field("customer_id") int customer_id);
+
+    @POST("shoppingcar/selectByCustomer")
+    @FormUrlEncoded
+    Call<StoreBean> selectByCustomer(@Field("customer_id") int customer_id);
+
 }

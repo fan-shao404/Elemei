@@ -38,6 +38,9 @@
         <activity
             android:name=".view.activity.SettingActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".view.activity.ShoppingCarActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>
 
 </manifest>

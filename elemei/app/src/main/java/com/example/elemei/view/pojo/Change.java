@@ -6,20 +6,20 @@ package com.example.elemei.view.pojo;
  */
 public class Change {
 
-    private CheckedCommodity checkedCommodity;
+    private CheckedCommodity CheckedCommodity;
     private Operation operation;
 
-    public Change(CheckedCommodity checkedCommodity, Operation operation) {
-        this.checkedCommodity = checkedCommodity;
+    public Change(CheckedCommodity CheckedCommodity, Operation operation) {
+        this.CheckedCommodity = CheckedCommodity;
         this.operation = operation;
     }
 
     public CheckedCommodity getCheckedCommodity() {
-        return checkedCommodity;
+        return CheckedCommodity;
     }
 
-    public void setCheckedCommodity(CheckedCommodity checkedCommodity) {
-        this.checkedCommodity = checkedCommodity;
+    public void setCheckedCommodity(CheckedCommodity CheckedCommodity) {
+        this.CheckedCommodity = CheckedCommodity;
     }
 
     public Operation getOperation() {

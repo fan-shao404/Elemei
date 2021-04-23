@@ -19,11 +19,9 @@ import com.example.elemei.view.pojo.InsertBean;
 import com.example.elemei.view.util.Const;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

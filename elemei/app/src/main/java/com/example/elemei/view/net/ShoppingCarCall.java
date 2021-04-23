@@ -1,12 +1,11 @@
 package com.example.elemei.view.net;
 
-import com.example.elemei.view.pojo.CheckedCommmodityBean;
+import com.example.elemei.view.pojo.CheckedCommodity;
+import com.example.elemei.view.pojo.CheckedCommodityBean;
 import com.example.elemei.view.pojo.InsertBean;
-
-import java.io.IOException;
+import com.example.elemei.view.pojo.StoreBean;
 
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Date:2021/4/16
@@ -51,7 +50,12 @@ public class ShoppingCarCall extends BaseCall<ShoppingCarService> {
     }
 
     //查询一个商家的购物车列表
-    public void selectAll(int store_id, int customer_id , Callback<CheckedCommmodityBean> callback) {
+    public void selectAll(int store_id, int customer_id, Callback<CheckedCommodityBean> callback) {
         shoppingCarService.selectAll(store_id, customer_id).enqueue(callback);
+    }
+
+    //查询客户加入购物车的所有商家
+    public void selectByCustomer(int customer_id, Callback<StoreBean> callback) {
+        shoppingCarService.selectByCustomer(customer_id).enqueue(callback);
     }
 }

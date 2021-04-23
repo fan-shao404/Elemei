@@ -1,6 +1,5 @@
 package com.example.elemei.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,8 +23,8 @@ import com.example.elemei.view.adapter.CommodityAdapter;
 import com.example.elemei.view.net.CommodityCall;
 import com.example.elemei.view.net.ShoppingCarCall;
 import com.example.elemei.view.pojo.Change;
-import com.example.elemei.view.pojo.CheckedCommmodityBean;
 import com.example.elemei.view.pojo.CheckedCommodity;
+import com.example.elemei.view.pojo.CheckedCommodityBean;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.CommodityBean;
 import com.example.elemei.view.popupwindow.ShoppingCarPopupWindow;
@@ -88,9 +87,9 @@ public class StoreActivity extends AppCompatActivity {
         initView();
         commodityCall = new CommodityCall();
         shoppingCarCall = new ShoppingCarCall();
-        shoppingCarCall.selectAll(id, Const.customer_id, new Callback<CheckedCommmodityBean>() {
+        shoppingCarCall.selectAll(id, Const.customer_id, new Callback<CheckedCommodityBean>() {
             @Override
-            public void onResponse(Call<CheckedCommmodityBean> call, Response<CheckedCommmodityBean> response) {
+            public void onResponse(Call<CheckedCommodityBean> call, Response<CheckedCommodityBean> response) {
                 if (response.body().getResult() != null && response.body().getResult().size() > 0) {
                     checkedCommodities = response.body().getResult();
                     commodityAdapter.setCheckedCommodities(checkedCommodities);
@@ -116,7 +115,7 @@ public class StoreActivity extends AppCompatActivity {
                         commodityAdapter.setList(commodities);
                         commodity_recycle.setLayoutManager(new LinearLayoutManager(StoreActivity.this));
                         commodity_recycle.setAdapter(commodityAdapter);
-                        commodity_recycle.addItemDecoration(new MyItemDecoration());
+                        commodity_recycle.addItemDecoration(new MyItemDecoration(0, 12));
                     }
 
                     @Override
@@ -128,7 +127,7 @@ public class StoreActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CheckedCommmodityBean> call, Throwable t) {
+            public void onFailure(Call<CheckedCommodityBean> call, Throwable t) {
                 Log.e("TAG", "onFailure: hhhhhhhh");
                 Toast.makeText(StoreActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
             }
@@ -151,6 +150,13 @@ public class StoreActivity extends AppCompatActivity {
         store_start_send = findViewById(R.id.tv_homepage_store_start_send);
         store_start_send.setText("￥" + start_send + "起送");
         commodity_recycle = findViewById(R.id.rv_activity_store_commodity);
+        ImageView back = findViewById(R.id.iv_homepage_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         total = findViewById(R.id.tv_homepage_sum);
         counts = findViewById(R.id.tv_homepage_count);
         shopping_car = findViewById(R.id.view_homepage_store_shopping_car);
@@ -249,9 +255,9 @@ public class StoreActivity extends AppCompatActivity {
 
     public void deleteAll() {
         count = 0;
-        sum =  0;
-        for (int i=0 ; i<commodities.size(); i++) {
-            commodityAdapter.notifyItemChanged(i,3);
+        sum = 0;
+        for (int i = 0; i < commodities.size(); i++) {
+            commodityAdapter.notifyItemChanged(i, 3);
         }
     }
 }

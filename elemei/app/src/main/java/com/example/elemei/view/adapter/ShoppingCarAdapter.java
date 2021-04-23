@@ -63,7 +63,6 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
                 shoppingCarCall.add(checkedCommodity.getcommodity_id(), 59, new Callback<InsertBean>() {
                     @Override
                     public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
-                        Log.e("TAG", "onResponse: " + response.body().toString());
                         baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) + 1));
                         EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.ADD));
                     }
@@ -96,7 +95,6 @@ public class ShoppingCarAdapter extends BaseQuickAdapter<CheckedCommodity, BaseV
                     shoppingCarCall.subtract(checkedCommodity.getcommodity_id(), 59, new Callback<InsertBean>() {
                         @Override
                         public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
-                            Log.e("TAG", "onResponse: " + response.body().toString());
                             baseViewHolder.setText(R.id.tv_commodity_sum, String.valueOf(Integer.parseInt((String) textView.getText()) - 1));
                             EventBus.getDefault().post(new Change(checkedCommodity, Change.Operation.SUBTRACT));
                         }

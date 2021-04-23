@@ -95,7 +95,7 @@ public class ShoppingCarPopupWindow extends PopupWindow implements View.OnClickL
         recyclerView = view.findViewById(R.id.rv_popup_shopping_car);
         shoppingCarAdapter = new ShoppingCarAdapter(data);
         recyclerView.setAdapter(shoppingCarAdapter);
-        recyclerView.addItemDecoration(new MyItemDecoration());
+        recyclerView.addItemDecoration(new MyItemDecoration(0, 12));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
