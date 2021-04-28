@@ -12,15 +12,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.elemei.R;
 import com.example.elemei.view.net.ShoppingCarCall;
-import com.example.elemei.view.pojo.Change;
-import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.CheckedCommodityBean;
 import com.example.elemei.view.pojo.InsertBean;
 import com.example.elemei.view.pojo.Store;
 import com.example.elemei.view.util.Const;
 import com.example.elemei.view.util.MyItemDecoration;
 
-import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,7 +68,7 @@ public class ShoppingCarActivityAdapter extends BaseQuickAdapter<Store, BaseView
         empty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shoppingCarCall.deleteAll(store.getId(), Const.customer_id, new Callback<InsertBean>() {
+                shoppingCarCall.deleteAllByStore(store.getId(), Const.customer_id, new Callback<InsertBean>() {
                     @Override
                     public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                         if (response.body().getOkPacket() != null && response.body().getOkPacket().getAffectedRows() > 0) {

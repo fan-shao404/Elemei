@@ -96,10 +96,10 @@
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/view_function"
                 app:layout_constraintLeft_toLeftOf="@+id/view_function"
-                app:layout_constraintRight_toLeftOf="@+id/tv_follwo" />
+                app:layout_constraintRight_toLeftOf="@+id/tv_follow" />
 
             <TextView
-                android:id="@+id/tv_follwo"
+                android:id="@+id/tv_follow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -116,9 +116,9 @@
                 android:gravity="center"
                 android:text="购物车"
                 android:textColor="@color/black"
-                app:layout_constraintLeft_toRightOf="@+id/tv_follwo"
+                app:layout_constraintLeft_toRightOf="@+id/tv_follow"
                 app:layout_constraintRight_toLeftOf="@+id/tv_evaluate"
-                app:layout_constraintTop_toTopOf="@+id/tv_follwo" />
+                app:layout_constraintTop_toTopOf="@+id/tv_follow" />
 
             <TextView
                 android:id="@+id/tv_evaluate"
@@ -147,8 +147,8 @@
                 android:layout_height="30dp"
                 android:src="@mipmap/ic_follow"
                 app:layout_constraintBottom_toBottomOf="@id/iv_card"
-                app:layout_constraintLeft_toLeftOf="@id/tv_follwo"
-                app:layout_constraintRight_toRightOf="@id/tv_follwo" />
+                app:layout_constraintLeft_toLeftOf="@id/tv_follow"
+                app:layout_constraintRight_toRightOf="@id/tv_follow" />
 
             <ImageView
                 android:id="@+id/iv_shoppingcar"

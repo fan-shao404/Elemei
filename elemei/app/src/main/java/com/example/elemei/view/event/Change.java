@@ -1,4 +1,6 @@
-package com.example.elemei.view.pojo;
+package com.example.elemei.view.event;
+
+import com.example.elemei.view.pojo.CheckedCommodity;
 
 /**
  * Date:2021/4/17
@@ -6,7 +8,7 @@ package com.example.elemei.view.pojo;
  */
 public class Change {
 
-    private CheckedCommodity CheckedCommodity;
+    private com.example.elemei.view.pojo.CheckedCommodity CheckedCommodity;
     private Operation operation;
 
     public Change(CheckedCommodity CheckedCommodity, Operation operation) {

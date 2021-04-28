@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.elemei.R;
 import com.example.elemei.view.net.ShoppingCarCall;
-import com.example.elemei.view.pojo.Change;
+import com.example.elemei.view.event.Change;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.Commodity;
 import com.example.elemei.view.pojo.InsertBean;

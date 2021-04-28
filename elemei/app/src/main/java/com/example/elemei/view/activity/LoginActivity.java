@@ -16,15 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.elemei.R;
-import com.example.elemei.view.event.Login;
 import com.example.elemei.view.net.CustomerCall;
 import com.example.elemei.view.pojo.CountBean;
 import com.example.elemei.view.pojo.Customer;
 import com.example.elemei.view.pojo.CustomerBean;
 import com.example.elemei.view.util.Const;
 import com.example.elemei.view.util.SPUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import retrofit2.Callback;

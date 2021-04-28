@@ -22,7 +22,7 @@ import com.example.elemei.R;
 import com.example.elemei.view.adapter.CommodityAdapter;
 import com.example.elemei.view.net.CommodityCall;
 import com.example.elemei.view.net.ShoppingCarCall;
-import com.example.elemei.view.pojo.Change;
+import com.example.elemei.view.event.Change;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.CheckedCommodityBean;
 import com.example.elemei.view.pojo.Commodity;

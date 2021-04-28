@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.elemei.R;
 import com.example.elemei.view.adapter.ShoppingCarActivityAdapter;
 import com.example.elemei.view.net.ShoppingCarCall;
+import com.example.elemei.view.pojo.InsertBean;
 import com.example.elemei.view.pojo.Store;
 import com.example.elemei.view.pojo.StoreBean;
 import com.example.elemei.view.util.Const;
@@ -36,6 +39,7 @@ public class ShoppingCarActivity extends AppCompatActivity implements View.OnCli
     private ShoppingCarActivityAdapter shoppingCarActivityAdapter;
     private ShoppingCarCall shoppingCarCall = new ShoppingCarCall();
     private List<Store> stores;
+    private TextView empty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +55,21 @@ public class ShoppingCarActivity extends AppCompatActivity implements View.OnCli
             case R.id.iv_shopping_car_back:
                 finish();
                 break;
+            case  R.id.tv_shopping_car_empty:
+                shoppingCarCall.deleteAll(Const.customer_id, new Callback<InsertBean>() {
+                    @Override
+                    public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
+                        if (response.body().getOkPacket() != null && response.body().getOkPacket().getAffectedRows() > 0) {
+                            shoppingCarActivityAdapter.setList(null);
+                            empty.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<InsertBean> call, Throwable t) {
+                        Toast.makeText(ShoppingCarActivity.this, "请检查网络", Toast.LENGTH_SHORT).show();
+                    }
+                });
             default:
                 break;
         }
@@ -64,6 +83,8 @@ public class ShoppingCarActivity extends AppCompatActivity implements View.OnCli
         ImageView back = findViewById(R.id.iv_shopping_car_back);
         back.setOnClickListener(this);
         recyclerView = findViewById(R.id.rv_activity_shopping_car);
+        empty = findViewById(R.id.tv_shopping_car_empty);
+        empty.setOnClickListener(this);
     }
     public void getData() {
         stores = new ArrayList<>();
@@ -72,6 +93,11 @@ public class ShoppingCarActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<StoreBean> call, Response<StoreBean> response) {
                 if (response.body().getResult() != null) {
                     stores = response.body().getResult();
+                    if (stores.size() > 0) {
+                        empty.setVisibility(View.VISIBLE);
+                    } else {
+                        empty.setVisibility(View.INVISIBLE);
+                    }
                     shoppingCarActivityAdapter = new ShoppingCarActivityAdapter(stores);
                     recyclerView.setLayoutManager(new LinearLayoutManager(ShoppingCarActivity.this));
                     recyclerView.addItemDecoration(new MyItemDecoration(8,8));

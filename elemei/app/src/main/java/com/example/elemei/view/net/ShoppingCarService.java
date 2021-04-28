@@ -33,9 +33,9 @@ public interface ShoppingCarService {
     @FormUrlEncoded
     Call<InsertBean> delete(@Field("commodity_id") int commodity_id, @Field("customer_id") int customer_id);
 
-    @POST("shoppingcar/deleteAll")
+    @POST("shoppingcar/deleteAllByStore")
     @FormUrlEncoded
-    Call<InsertBean> deleteAll(@Field("store_id") int store_id, @Field("customer_id") int customer_id);
+    Call<InsertBean> deleteAllByStore(@Field("store_id") int store_id, @Field("customer_id") int customer_id);
 
     @POST("shoppingcar/selectAll")
     @FormUrlEncoded
@@ -45,4 +45,7 @@ public interface ShoppingCarService {
     @FormUrlEncoded
     Call<StoreBean> selectByCustomer(@Field("customer_id") int customer_id);
 
+    @POST("shoppingcar/deleteAll")
+    @FormUrlEncoded
+    Call<InsertBean> deleteAll(@Field("customer_id") int customer_id);
 }

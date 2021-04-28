@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.elemei.R;
+import com.example.elemei.view.activity.FollowActivity;
 import com.example.elemei.view.activity.LoginActivity;
 import com.example.elemei.view.activity.SettingActivity;
 import com.example.elemei.view.activity.ShoppingCarActivity;
@@ -30,6 +31,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     private ImageView cover;
     private TextView nickname;
     private ImageView shopping_car;
+    private ImageView follow;
 
     @Nullable
     @Override
@@ -69,6 +71,13 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                     startActivity(new Intent(getActivity(), ShoppingCarActivity.class));
                 }
                 break;
+            case R.id.iv_follow:
+                if (Const.customer_id == 0) {
+                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(getActivity(), FollowActivity.class));
+                }
+                break;
             default:
                 break;
         }
@@ -86,5 +95,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         nickname.setOnClickListener(this);
         shopping_car = getView().findViewById(R.id.iv_shoppingcar);
         shopping_car.setOnClickListener(this);
+        follow = getView().findViewById(R.id.iv_follow);
+        follow.setOnClickListener(this);
     }
 }

@@ -4,12 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +19,6 @@ import com.example.elemei.R;
 import com.example.elemei.view.activity.ShoppingCarActivity;
 import com.example.elemei.view.adapter.StoreAdapter;
 import com.example.elemei.view.activity.LoginActivity;
-import com.example.elemei.view.event.Login;
 import com.example.elemei.view.net.StoreCall;
 import com.example.elemei.view.pojo.Store;
 import com.example.elemei.view.pojo.StoreBean;
@@ -32,9 +28,6 @@ import com.example.elemei.view.util.MyItemDecoration;
 import com.example.elemei.view.util.NetUtils;
 import com.example.elemei.view.util.StatusBarUtils;
 import com.google.android.material.appbar.AppBarLayout;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;

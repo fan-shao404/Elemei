@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.elemei.R;
 import com.example.elemei.view.adapter.ShoppingCarAdapter;
 import com.example.elemei.view.net.ShoppingCarCall;
-import com.example.elemei.view.pojo.Change;
+import com.example.elemei.view.event.Change;
 import com.example.elemei.view.pojo.CheckedCommodity;
 import com.example.elemei.view.pojo.InsertBean;
 import com.example.elemei.view.util.MyItemDecoration;
@@ -100,7 +100,7 @@ public class ShoppingCarPopupWindow extends PopupWindow implements View.OnClickL
     }
 
     public void deleteAll() {
-        shoppingCarCall.deleteAll(store_id, customer_id, new Callback<InsertBean>() {
+        shoppingCarCall.deleteAllByStore(store_id, customer_id, new Callback<InsertBean>() {
             @Override
             public void onResponse(Call<InsertBean> call, Response<InsertBean> response) {
                 if (response.body().getOkPacket() != null && response.body().getOkPacket().getAffectedRows() > 0) {
